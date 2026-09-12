@@ -1,0 +1,13 @@
+{
+  "name": "skill-exchange-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Root workspace for the Skill Exchange Platform (frontend + backend)",
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run dev --prefix backend\"",
+    "install:all": "npm install --prefix frontend && npm install --prefix backend"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
+}

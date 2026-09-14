@@ -19,9 +19,14 @@ const skillRequestSchema = new mongoose.Schema(
       ref: 'Skill',
       required: [true, 'Skill is required'],
     },
+    offeredSkill: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Skill',
+      default: null,
+    },
     status: {
       type: String,
-      enum: ['pending', 'accepted', 'rejected'],
+      enum: ['pending', 'accepted', 'rejected', 'cancelled'],
       default: 'pending',
     },
     message: {

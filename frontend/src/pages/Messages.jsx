@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { MessageSquareText } from 'lucide-react'
 
-import Avatar from '../components/Avatar'
-import Navbar from '../components/Navbar'
 import { getConversations } from '../services/messages'
+import AppLayout from '../components/layout/AppLayout'
+import PageHeader from '../components/ui/PageHeader'
+import UserAvatar from '../components/ui/UserAvatar'
+import EmptyState from '../components/ui/EmptyState'
+import LoadingState from '../components/ui/LoadingState'
+import Toast from '../components/ui/Toast'
+import ChatWindow from '../components/chat/ChatWindow'
 
-const formatDateTime = (iso) => {
+const formatTime = (iso) => {
   if (!iso) return ''
   return new Date(iso).toLocaleString([], {
     month: 'short',
@@ -15,113 +20,135 @@ const formatDateTime = (iso) => {
   })
 }
 
-const ConversationCard = ({ conversation }) => (
-  <Link
-    to={`/messages/${conversation.otherUserId}`}
-    className="block rounded-xl border border-gray-100 bg-white p-5 shadow-sm transition hover:border-blue-200 hover:shadow"
-  >
-    <div className="flex items-center gap-4">
-      <Avatar
-        name={conversation.name}
-        profileImage={conversation.profileImage}
-        size="h-12 w-12"
-      />
-      <div className="min-w-0 flex-1">
-        <div className="flex items-center justify-between gap-2">
-          <h3 className="truncate text-base font-semibold text-gray-900">
-            {conversation.name}
-          </h3>
-          {conversation.lastMessageAt && (
-            <span className="shrink-0 text-xs text-gray-400">
-              {formatDateTime(conversation.lastMessageAt)}
-            </span>
-          )}
-        </div>
-        <p className="mt-0.5 text-sm text-gray-500">
-          {conversation.skillName}
-          {conversation.category ? ` · ${conversation.category}` : ''}
-        </p>
-        <p className="mt-1 truncate text-sm text-gray-600">
-          {conversation.lastMessage || 'Start the conversation'}
-        </p>
-      </div>
-    </div>
-  </Link>
-)
-
 const Messages = () => {
   const [conversations, setConversations] = useState([])
+  const [selected, setSelected] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    let active = true
-
-    const load = async () => {
-      try {
-        const res = await getConversations()
-        if (active) {
-          setConversations(res.data.conversations || [])
-          setError('')
-        }
-      } catch (err) {
-        if (active) {
-          setError(
-            err.response?.data?.message || 'Failed to load conversations. Please try again.'
-          )
-        }
-      } finally {
-        if (active) setLoading(false)
-      }
+  const loadConversations = async () => {
+    setLoading(true)
+    try {
+      const res = await getConversations()
+      setConversations(res.data.conversations || [])
+      setError('')
+    } catch {
+      setError('Failed to load conversations. Please try again.')
+    } finally {
+      setLoading(false)
     }
-
-    load()
-
-    return () => {
-      active = false
-    }
-  }, [])
-
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-100">
-        <p className="text-sm text-gray-500">Loading conversations...</p>
-      </div>
-    )
   }
 
+  useEffect(() => {
+    loadConversations()
+  }, [])
+
+  // Refresh the last-message preview whenever the open thread changes.
+  useEffect(() => {
+    if (!selected) return
+    loadConversations()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected?.otherUserId])
+
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Navbar />
+    <AppLayout>
+      <PageHeader
+        title="Messages"
+        subtitle="Chat with people you have an accepted exchange with."
+      />
 
-      <main className="mx-auto max-w-5xl px-4 py-8">
-        <h1 className="text-xl font-bold text-gray-900">Messages</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          Chat with people you have an accepted exchange with.
-        </p>
+      {error && (
+        <div className="mt-6">
+          <Toast type="error" message={error} onClose={() => setError('')} />
+        </div>
+      )}
 
-        {error && (
-          <div className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-            {error}
-          </div>
-        )}
+      {loading ? (
+        <div className="mt-6">
+          <LoadingState rows={3} />
+        </div>
+      ) : (
+        <div className="mt-6 grid gap-4 lg:grid-cols-3">
+          {/* Conversation list */}
+          <section className="lg:col-span-1">
+            {conversations.length === 0 ? (
+              <EmptyState
+                icon={MessageSquareText}
+                title="No conversations yet"
+                message="Once someone accepts your exchange request — or you accept theirs — you can chat right here."
+              />
+            ) : (
+              <div className="space-y-2">
+                {conversations.map((conversation) => {
+                  const active = selected?.otherUserId === conversation.otherUserId
+                  return (
+                    <button
+                      key={conversation.otherUserId}
+                      type="button"
+                      onClick={() => setSelected(conversation)}
+                      className={`w-full rounded-xl border p-3 text-left transition ${
+                        active
+                          ? 'border-primary-200 bg-primary-50'
+                          : 'border-gray-100 bg-white shadow-sm hover:border-primary-100 hover:shadow'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <UserAvatar
+                          name={conversation.name}
+                          profileImage={conversation.profileImage}
+                          size="md"
+                        />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center justify-between gap-2">
+                            <p className="truncate text-sm font-semibold text-ink">
+                              {conversation.name}
+                            </p>
+                            {conversation.lastMessageAt && (
+                              <span className="shrink-0 text-xs text-gray-400">
+                                {formatTime(conversation.lastMessageAt)}
+                              </span>
+                            )}
+                          </div>
+                          <p className="mt-0.5 truncate text-xs text-primary-600">
+                            {conversation.skillName}
+                            {conversation.category ? ` · ${conversation.category}` : ''}
+                          </p>
+                          <p className="mt-1 truncate text-xs text-gray-500">
+                            {conversation.lastMessage || 'Start the conversation'}
+                          </p>
+                        </div>
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+          </section>
 
-        {conversations.length === 0 ? (
-          <div className="mt-6 rounded-xl border border-dashed border-gray-300 bg-white p-10 text-center">
-            <p className="text-sm text-gray-500">
-              You have no conversations yet. Once someone accepts your exchange request —
-              or you accept theirs — you can chat right here.
-            </p>
-          </div>
-        ) : (
-          <div className="mt-6 space-y-4">
-            {conversations.map((conversation) => (
-              <ConversationCard key={conversation.otherUserId} conversation={conversation} />
-            ))}
-          </div>
-        )}
-      </main>
-    </div>
+          {/* Thread */}
+          <section className="lg:col-span-2">
+            <div className="h-[70vh] overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm lg:h-[calc(100vh-220px)]">
+              {selected ? (
+                <ChatWindow
+                  userId={selected.otherUserId}
+                  onBack={() => setSelected(null)}
+                />
+              ) : (
+                <div className="flex h-full flex-col items-center justify-center px-6 text-center">
+                  <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary-50 text-primary-500">
+                    <MessageSquareText className="h-7 w-7" strokeWidth={1.75} />
+                  </span>
+                  <h3 className="mt-4 text-lg font-semibold text-ink">Select a conversation</h3>
+                  <p className="mt-1 max-w-xs text-sm text-gray-500">
+                    Choose a member from the list to read and send messages.
+                  </p>
+                </div>
+              )}
+            </div>
+          </section>
+        </div>
+      )}
+    </AppLayout>
   )
 }
 

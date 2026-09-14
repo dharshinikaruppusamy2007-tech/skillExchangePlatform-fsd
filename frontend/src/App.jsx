@@ -3,7 +3,8 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import ForgotPassword from './pages/ForgotPassword'
-import Profile from './pages/Profile/Profile'
+import Dashboard from './pages/Dashboard'
+import Profile from './pages/Profile'
 import Skills from './pages/Skills'
 import AddSkill from './pages/Skills/AddSkill'
 import SkillDetails from './pages/Skills/SkillDetails'
@@ -12,7 +13,17 @@ import Discover from './pages/Discover'
 import Requests from './pages/Requests'
 import Messages from './pages/Messages'
 import Chat from './pages/Chat'
+import Sessions from './pages/Sessions'
+import SessionDetails from './pages/Sessions/SessionDetails'
+import Admin from './pages/admin/Admin'
+import AdminUsers from './pages/admin/AdminUsers'
+import AdminSkills from './pages/admin/AdminSkills'
+import AdminExchanges from './pages/admin/AdminExchanges'
+import AdminSessions from './pages/admin/AdminSessions'
+import AdminReviews from './pages/admin/AdminReviews'
+import AdminAnalytics from './pages/admin/AdminAnalytics'
 import ProtectedRoute from './routes/ProtectedRoute'
+import AdminProtectedRoute from './routes/AdminProtectedRoute'
 
 const App = () => {
   return (
@@ -22,7 +33,17 @@ const App = () => {
       <Route path="/signup" element={<Signup />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
 
-      {/* User profile (Module 2) - replaces the temporary placeholder page */}
+      {/* Dashboard (Module 2/redesign) - landing page after login */}
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* User profile (Module 2) */}
       <Route
         path="/profile"
         element={
@@ -86,7 +107,7 @@ const App = () => {
         }
       />
 
-      {/* Conversations list (Module 5) */}
+      {/* Conversations (Module 5) */}
       <Route
         path="/messages"
         element={
@@ -95,8 +116,6 @@ const App = () => {
           </ProtectedRoute>
         }
       />
-
-      {/* Chat thread with an accepted exchange partner (Module 5) */}
       <Route
         path="/messages/:userId"
         element={
@@ -106,9 +125,84 @@ const App = () => {
         }
       />
 
-      {/* Fallback: after login users land on /profile; unknown routes also go
-          there, which redirects to /login when not authenticated */}
-      <Route path="*" element={<Navigate to="/profile" replace />} />
+      {/* Sessions */}
+      <Route
+        path="/sessions"
+        element={
+          <ProtectedRoute>
+            <Sessions />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/sessions/:id"
+        element={
+          <ProtectedRoute>
+            <SessionDetails />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Admin (Module 6) */}
+      <Route
+        path="/admin"
+        element={
+          <AdminProtectedRoute>
+            <Admin />
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/users"
+        element={
+          <AdminProtectedRoute>
+            <AdminUsers />
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/skills"
+        element={
+          <AdminProtectedRoute>
+            <AdminSkills />
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/exchanges"
+        element={
+          <AdminProtectedRoute>
+            <AdminExchanges />
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/sessions"
+        element={
+          <AdminProtectedRoute>
+            <AdminSessions />
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/reviews"
+        element={
+          <AdminProtectedRoute>
+            <AdminReviews />
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/analytics"
+        element={
+          <AdminProtectedRoute>
+            <AdminAnalytics />
+          </AdminProtectedRoute>
+        }
+      />
+
+      {/* Fallback: unauthenticated users go to login, otherwise to dashboard. */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
 }

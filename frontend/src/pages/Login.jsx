@@ -44,7 +44,7 @@ const Login = () => {
     setLoading(true)
     try {
       await login(form.email, form.password)
-      navigate('/profile')
+      navigate('/')
     } catch (error) {
       setSubmitError(
         error.response?.data?.message || 'Something went wrong. Please try again.'
@@ -82,7 +82,7 @@ const Login = () => {
         <div className="flex justify-end">
           <Link
             to="/forgot-password"
-            className="text-sm font-medium text-blue-600 hover:text-blue-700"
+            className="text-sm font-medium text-primary-600 hover:text-primary-700"
           >
             Forgot password?
           </Link>
@@ -97,7 +97,7 @@ const Login = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+          className="w-full rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {loading ? 'Logging in...' : 'Login'}
         </button>
@@ -105,7 +105,7 @@ const Login = () => {
 
       <p className="mt-6 text-center text-sm text-gray-600">
         Don&apos;t have an account?{' '}
-        <Link to="/signup" className="font-medium text-blue-600 hover:text-blue-700">
+        <Link to="/signup" className="font-medium text-primary-600 hover:text-primary-700">
           Sign up
         </Link>
       </p>

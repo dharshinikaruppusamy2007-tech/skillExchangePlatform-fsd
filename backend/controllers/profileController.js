@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../models/User');
 const Skill = require('../models/Skill');
+const Review = require('../models/Review');
 
 const EXPERIENCE_LEVELS = ['Beginner', 'Intermediate', 'Advanced'];
 const MAX_SKILLS = 20;
@@ -161,6 +162,26 @@ const getPublicProfile = async (req, res) => {
     // Public information only - never password, email, role or internal fields
     const skills = await Skill.find({ userId: user._id }).sort({ createdAt: -1 }).select('-userId');
 
+    // Real review data: recent reviews received plus rating summary
+    const recentReviews = await Review.find({ reviewee: user._id })
+      .populate('reviewer', 'name profileImage')
+      .populate('skill', 'skillName category')
+      .sort({ createdAt: -1 })
+      .limit(5);
+
+    const distributionRows = await Review.aggregate([
+      { $match: { reviewee: user._id } },
+      { $group: { _id: '$rating', count: { $sum: 1 } } },
+    ]);
+    const counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    let total = 0;
+    let sum = 0;
+    for (const row of distributionRows) {
+      counts[row._id] = row.count;
+      total += row.count;
+      sum += row._id * row.count;
+    }
+
     res.status(200).json({
       _id: user._id,
       name: user.name,
@@ -171,6 +192,12 @@ const getPublicProfile = async (req, res) => {
       skillsToTeach: user.skillsToTeach,
       skillsToLearn: user.skillsToLearn,
       skills,
+      rating: {
+        average: total ? Number((sum / total).toFixed(1)) : 0,
+        count: total,
+        distribution: [1, 2, 3, 4, 5].map((stars) => ({ stars, count: counts[stars] })),
+      },
+      recentReviews,
     });
   } catch (error) {
     console.error('Get public profile error:', error.message);

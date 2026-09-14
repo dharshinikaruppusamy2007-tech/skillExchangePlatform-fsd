@@ -34,10 +34,10 @@ const InputField = ({
           onChange={onChange}
           placeholder={placeholder}
           autoComplete={autoComplete}
-          className={`w-full rounded-lg border bg-white px-3.5 py-2.5 pr-20 text-sm text-gray-900 placeholder-gray-400 outline-none transition focus:ring-2 ${
+          className={`w-full rounded-lg border bg-white px-3.5 py-2.5 pr-20 text-sm text-ink placeholder-gray-400 outline-none transition focus:ring-2 ${
             error
               ? 'border-red-400 focus:border-red-400 focus:ring-red-100'
-              : 'border-gray-300 focus:border-blue-500 focus:ring-blue-100'
+              : 'border-gray-200 focus:border-primary-300 focus:ring-primary-100'
           }`}
         />
         {isPassword && (

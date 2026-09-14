@@ -23,6 +23,11 @@ const protect = async (req, res, next) => {
         return res.status(401).json({ message: 'Not authorized, user not found' });
       }
 
+      // Deactivated accounts may not use the platform
+      if (user.active === false) {
+        return res.status(401).json({ message: 'Not authorized, account is deactivated' });
+      }
+
       // Attach the logged-in user to the request for use in controllers
       req.user = { id: user._id, email: user.email, role: user.role };
       next();
@@ -35,4 +40,20 @@ const protect = async (req, res, next) => {
   }
 };
 
-module.exports = { protect };
+// Requires an authenticated ADMIN. Must be used after `protect`.
+const requireAdmin = async (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: 'Not authorized, please log in' });
+    }
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Admin access required' });
+    }
+    next();
+  } catch (error) {
+    console.error('Admin middleware error:', error.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+module.exports = { protect, requireAdmin };

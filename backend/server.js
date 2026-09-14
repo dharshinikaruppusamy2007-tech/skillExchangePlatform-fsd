@@ -9,6 +9,9 @@ const profileRoutes = require('./routes/profileRoutes');
 const skillRoutes = require('./routes/skillRoutes');
 const requestRoutes = require('./routes/requestRoutes');
 const messageRoutes = require('./routes/messageRoutes');
+const sessionRoutes = require('./routes/sessionRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
@@ -42,6 +45,15 @@ app.use('/api/requests', requestRoutes);
 
 // Exchange messaging routes
 app.use('/api/messages', messageRoutes);
+
+// Skill exchange session routes
+app.use('/api/sessions', sessionRoutes);
+
+// Rating & review routes
+app.use('/api/reviews', reviewRoutes);
+
+// Admin routes (require an admin role)
+app.use('/api/admin', adminRoutes);
 
 // 404 handler for unknown routes
 app.use((req, res) => {

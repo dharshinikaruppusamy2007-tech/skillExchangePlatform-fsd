@@ -84,7 +84,7 @@ const ProfileForm = ({ profile, onSubmit, onCancel, saving }) => {
           className={`w-full rounded-lg border bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition focus:ring-2 ${
             errors.name
               ? 'border-red-400 focus:border-red-400 focus:ring-red-100'
-              : 'border-gray-300 focus:border-blue-500 focus:ring-blue-100'
+              : 'border-gray-200 focus:border-primary-300 focus:ring-primary-100'
           }`}
         />
         {errors.name && <p className="mt-1.5 text-sm text-red-600">{errors.name}</p>}
@@ -124,7 +124,7 @@ const ProfileForm = ({ profile, onSubmit, onCancel, saving }) => {
           value={form.bio}
           onChange={handleChange}
           placeholder="Tell others a little about yourself"
-          className="w-full resize-y rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+          className="w-full resize-y rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition focus:border-primary-300 focus:ring-2 focus:ring-primary-100"
         />
       </div>
 
@@ -142,7 +142,7 @@ const ProfileForm = ({ profile, onSubmit, onCancel, saving }) => {
           value={form.location}
           onChange={handleChange}
           placeholder="City, country"
-          className="w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+          className="w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition focus:border-primary-300 focus:ring-2 focus:ring-primary-100"
         />
       </div>
 
@@ -158,7 +158,7 @@ const ProfileForm = ({ profile, onSubmit, onCancel, saving }) => {
           name="experienceLevel"
           value={form.experienceLevel}
           onChange={handleChange}
-          className="w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+          className="w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 outline-none transition focus:border-primary-300 focus:ring-2 focus:ring-primary-100"
         >
           {EXPERIENCE_LEVELS.map((level) => (
             <option key={level} value={level}>
@@ -196,7 +196,7 @@ const ProfileForm = ({ profile, onSubmit, onCancel, saving }) => {
           value={form.profileImage}
           onChange={handleChange}
           placeholder="https://example.com/avatar.png"
-          className="w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+          className="w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition focus:border-primary-300 focus:ring-2 focus:ring-primary-100"
         />
         <p className="mt-1.5 text-xs text-gray-400">
           Leave empty to use a placeholder avatar
@@ -207,7 +207,7 @@ const ProfileForm = ({ profile, onSubmit, onCancel, saving }) => {
         <button
           type="submit"
           disabled={saving}
-          className="w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+          className="w-full rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
         >
           {saving ? 'Saving...' : 'Save Changes'}
         </button>

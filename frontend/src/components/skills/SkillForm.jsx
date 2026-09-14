@@ -13,13 +13,13 @@ const COMMON_CATEGORIES = [
 const PROFICIENCY_LEVELS = ['Beginner', 'Intermediate', 'Advanced']
 
 // Form for adding or editing a skill. Pass initialSkill to edit an existing one.
-const SkillForm = ({ initialSkill, onSubmit, onCancel, saving }) => {
+const SkillForm = ({ initialSkill, initialType = 'teach', onSubmit, onCancel, saving }) => {
   const isEditing = Boolean(initialSkill)
 
   const [form, setForm] = useState({
     skillName: initialSkill?.skillName || '',
     category: initialSkill?.category || '',
-    type: initialSkill?.type || 'teach',
+    type: initialSkill?.type || initialType,
     description: initialSkill?.description || '',
     proficiency: initialSkill?.proficiency || '',
   })
@@ -58,7 +58,7 @@ const SkillForm = ({ initialSkill, onSubmit, onCancel, saving }) => {
     `w-full rounded-lg border bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition focus:ring-2 ${
       hasError
         ? 'border-red-400 focus:border-red-400 focus:ring-red-100'
-        : 'border-gray-300 focus:border-blue-500 focus:ring-blue-100'
+        : 'border-gray-200 focus:border-primary-300 focus:ring-primary-100'
     }`
 
   return (
@@ -124,8 +124,8 @@ const SkillForm = ({ initialSkill, onSubmit, onCancel, saving }) => {
               key={option.value}
               className={`flex-1 cursor-pointer rounded-lg border px-4 py-2.5 text-center text-sm font-semibold transition ${
                 form.type === option.value
-                  ? 'border-blue-600 bg-blue-50 text-blue-700'
-                  : 'border-gray-300 bg-white text-gray-600 hover:bg-gray-50'
+                  ? 'border-primary-600 bg-primary-50 text-primary-700'
+                  : 'border-gray-200 bg-white text-gray-600 hover:bg-gray-50'
               }`}
             >
               <input
@@ -173,7 +173,7 @@ const SkillForm = ({ initialSkill, onSubmit, onCancel, saving }) => {
           name="proficiency"
           value={form.proficiency}
           onChange={handleChange}
-          className="w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+          className="w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-sm text-gray-900 outline-none transition focus:border-primary-300 focus:ring-2 focus:ring-primary-100"
         >
           <option value="">Not specified</option>
           {PROFICIENCY_LEVELS.map((level) => (
@@ -188,7 +188,7 @@ const SkillForm = ({ initialSkill, onSubmit, onCancel, saving }) => {
         <button
           type="submit"
           disabled={saving}
-          className="w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+          className="w-full rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
         >
           {saving
             ? isEditing

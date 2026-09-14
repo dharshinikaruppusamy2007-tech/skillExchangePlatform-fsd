@@ -43,14 +43,14 @@ const SkillTagInput = ({ label, skills, onChange, placeholder }) => {
         {skills.map((skill, index) => (
           <span
             key={`${skill}-${index}`}
-            className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 py-1 pl-3 pr-1 text-sm font-medium text-blue-700"
+            className="inline-flex items-center gap-1.5 rounded-full bg-primary-50 py-1 pl-3 pr-1 text-sm font-medium text-primary-700"
           >
             {skill}
             <button
               type="button"
               onClick={() => removeSkill(index)}
               aria-label={`Remove ${skill}`}
-              className="flex h-5 w-5 items-center justify-center rounded-full text-blue-500 transition hover:bg-blue-100 hover:text-blue-700"
+              className="flex h-5 w-5 items-center justify-center rounded-full text-primary-600 transition hover:bg-primary-100 hover:text-primary-700"
             >
               ×
             </button>
@@ -70,12 +70,12 @@ const SkillTagInput = ({ label, skills, onChange, placeholder }) => {
           }}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          className="w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+          className="w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-primary-100"
         />
         <button
           type="button"
           onClick={addSkill}
-          className="shrink-0 rounded-lg border border-blue-600 px-4 py-2.5 text-sm font-semibold text-blue-600 transition hover:bg-blue-50"
+          className="shrink-0 rounded-lg border border-primary-600 px-4 py-2.5 text-sm font-semibold text-primary-600 transition hover:bg-primary-50"
         >
           Add
         </button>

@@ -6,6 +6,9 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const profileRoutes = require('./routes/profileRoutes');
+const skillRoutes = require('./routes/skillRoutes');
+const requestRoutes = require('./routes/requestRoutes');
+const messageRoutes = require('./routes/messageRoutes');
 
 const app = express();
 
@@ -30,6 +33,15 @@ app.use('/api/auth', authRoutes);
 
 // Profile routes
 app.use('/api/profile', profileRoutes);
+
+// Skill routes
+app.use('/api/skills', skillRoutes);
+
+// Skill exchange request routes
+app.use('/api/requests', requestRoutes);
+
+// Exchange messaging routes
+app.use('/api/messages', messageRoutes);
 
 // 404 handler for unknown routes
 app.use((req, res) => {

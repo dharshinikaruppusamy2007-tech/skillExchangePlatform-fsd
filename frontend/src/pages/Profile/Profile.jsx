@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
 
+import Navbar from '../../components/Navbar'
 import ProfileForm from '../../components/profile/ProfileForm'
-import { useAuth } from '../../context/AuthContext'
 import { getProfile, updateProfile } from '../../services/profile'
 
 const getInitials = (name = '') =>
@@ -35,9 +34,6 @@ const Avatar = ({ profile }) => {
 const EmptyValue = () => <span className="text-gray-400">Not set yet</span>
 
 const Profile = () => {
-  const { logout } = useAuth()
-  const navigate = useNavigate()
-
   const [profile, setProfile] = useState(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -74,11 +70,6 @@ const Profile = () => {
     }
   }, [])
 
-  const handleLogout = () => {
-    logout()
-    navigate('/login')
-  }
-
   const handleSave = async (values) => {
     setSaving(true)
     setSuccess('')
@@ -112,20 +103,7 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <header className="border-b border-gray-200 bg-white">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
-          <Link to="/profile" className="text-lg font-bold text-gray-900">
-            Skill Exchange
-          </Link>
-          <button
-            type="button"
-            onClick={handleLogout}
-            className="rounded-lg border border-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-50"
-          >
-            Logout
-          </button>
-        </div>
-      </header>
+      <Navbar />
 
       <main className="mx-auto max-w-3xl px-4 py-8">
         <h1 className="text-xl font-bold text-gray-900">My Profile</h1>

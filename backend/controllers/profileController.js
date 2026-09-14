@@ -1,4 +1,6 @@
+const mongoose = require('mongoose');
 const User = require('../models/User');
+const Skill = require('../models/Skill');
 
 const EXPERIENCE_LEVELS = ['Beginner', 'Intermediate', 'Advanced'];
 const MAX_SKILLS = 20;
@@ -142,4 +144,38 @@ const updateProfile = async (req, res) => {
   }
 };
 
-module.exports = { getProfile, updateProfile };
+// @desc    Get another user's public profile for viewing
+// @route   GET /api/profile/:id
+// @access  Private
+const getPublicProfile = async (req, res) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Public information only - never password, email, role or internal fields
+    const skills = await Skill.find({ userId: user._id }).sort({ createdAt: -1 }).select('-userId');
+
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      location: user.location,
+      bio: user.bio,
+      profileImage: user.profileImage,
+      experienceLevel: user.experienceLevel,
+      skillsToTeach: user.skillsToTeach,
+      skillsToLearn: user.skillsToLearn,
+      skills,
+    });
+  } catch (error) {
+    console.error('Get public profile error:', error.message);
+    res.status(500).json({ message: 'Server error. Please try again.' });
+  }
+};
+
+module.exports = { getProfile, updateProfile, getPublicProfile };

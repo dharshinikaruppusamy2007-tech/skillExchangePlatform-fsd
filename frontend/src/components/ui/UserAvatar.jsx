@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 const getInitials = (name = '') =>
   name
     .trim()
@@ -23,13 +25,16 @@ const UserAvatar = ({
   showStatus = false,
 }) => {
   const sizeClass = SIZE_STYLES[size] || SIZE_STYLES.md
+  const [imageFailed, setImageFailed] = useState(false)
+  const showImage = Boolean(profileImage) && !imageFailed
 
   return (
     <div className="relative shrink-0">
-      {profileImage ? (
+      {showImage ? (
         <img
           src={profileImage}
           alt={`${name}'s avatar`}
+          onError={() => setImageFailed(true)}
           className={`${sizeClass} rounded-full object-cover`}
         />
       ) : (

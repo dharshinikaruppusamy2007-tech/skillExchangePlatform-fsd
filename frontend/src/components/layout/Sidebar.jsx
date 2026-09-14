@@ -80,20 +80,26 @@ const Sidebar = ({ mobileOpen, onClose }) => {
         className={({ isActive }) =>
           `group flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm font-medium leading-[22px] transition duration-150 ${
             isActive
-              ? 'bg-primary-50 text-primary-700'
-              : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+              ? 'bg-lavender-100 text-primary-700'
+              : 'text-slate-600 hover:bg-lavender-100 hover:text-slate-900'
           }`
         }
       >
-        <span className="flex items-center gap-3">
-          <Icon
-            className="h-4.5 w-4.5 text-gray-400 transition group-hover:text-gray-600"
-            strokeWidth={2}
-          />
-          {label}
-        </span>
+        {({ isActive }) => (
+          <span className="flex min-w-0 items-center gap-3">
+            <Icon
+              className={`h-4.5 w-4.5 shrink-0 transition ${
+                isActive
+                  ? 'text-primary-600'
+                  : 'text-primary-400 group-hover:text-primary-600'
+              }`}
+              strokeWidth={2}
+            />
+            <span className="truncate">{label}</span>
+          </span>
+        )}
         {badge === 'requests' && pendingCount > 0 && (
-          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary-600 px-1.5 text-xs font-bold text-white">
+          <span className="flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-primary-600 px-1.5 text-xs font-bold text-white">
             {pendingCount}
           </span>
         )}
@@ -102,12 +108,12 @@ const Sidebar = ({ mobileOpen, onClose }) => {
 
   const navContent = (
     <>
-      <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
+      <nav className="flex-1 space-y-1.5 overflow-y-auto px-3 py-4">
         {renderNavItems(NAV_ITEMS)}
 
         {user?.role === 'admin' && (
           <>
-            <p className="px-3 pb-1 pt-5 text-xs font-semibold uppercase tracking-wider text-gray-400">
+            <p className="px-3 pb-1 pt-5 text-xs font-semibold uppercase tracking-wider text-slate-500">
               Admin
             </p>
             {renderNavItems(ADMIN_NAV_ITEMS)}
@@ -115,19 +121,19 @@ const Sidebar = ({ mobileOpen, onClose }) => {
         )}
       </nav>
 
-      <div className="border-t border-gray-100 p-3">
-        <div className="flex items-center gap-3 rounded-xl bg-gray-50 p-3">
+      <div className="border-t border-lavender-100 p-3">
+        <div className="flex items-center gap-3 rounded-xl bg-white/60 p-3">
           <UserAvatar name={user?.name} profileImage={user?.profileImage} size="sm" />
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-semibold text-ink">{user?.name}</p>
-            <p className="truncate text-xs text-gray-400">{user?.email}</p>
+            <p className="truncate text-xs text-slate-500">{user?.email}</p>
           </div>
           <button
             type="button"
             onClick={handleLogout}
             aria-label="Log out"
             title="Log out"
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-gray-400 transition hover:bg-red-50 hover:text-red-600"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-400 transition hover:bg-red-50 hover:text-red-600"
           >
             <LogOut className="h-4 w-4" />
           </button>
@@ -139,7 +145,7 @@ const Sidebar = ({ mobileOpen, onClose }) => {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden w-64 shrink-0 flex-col border-r border-gray-100 bg-white lg:flex">
+      <aside className="hidden w-64 shrink-0 flex-col border-r border-lavender-100 bg-lavender-50 lg:flex">
         {navContent}
       </aside>
 
@@ -151,8 +157,8 @@ const Sidebar = ({ mobileOpen, onClose }) => {
             onClick={onClose}
             aria-hidden="true"
           />
-          <aside className="absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col bg-white shadow-2xl">
-            <div className="flex h-16 items-center border-b border-gray-100 px-5">
+          <aside className="absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col bg-lavender-50 shadow-2xl">
+            <div className="flex h-16 items-center border-b border-lavender-100 px-5">
               <span className="text-lg font-semibold text-ink">Skill Exchange</span>
             </div>
             {navContent}

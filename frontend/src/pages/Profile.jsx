@@ -122,17 +122,17 @@ const Profile = () => {
       <section className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
         <div className="h-24 bg-gradient-to-r from-primary-600 to-primary-400 sm:h-28" />
         <div className="px-6 pb-6">
-          <div className="-mt-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div className="flex items-end gap-4">
-              <div className="rounded-full ring-4 ring-white">
+          <div className="-mt-12 flex min-w-0 flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div className="flex min-w-0 items-end gap-4">
+              <div className="shrink-0 rounded-full ring-4 ring-white">
                 <UserAvatar
                   name={profile?.name}
                   profileImage={profile?.profileImage}
                   size="xl"
                 />
               </div>
-              <div className="pb-1">
-                <h1 className="text-2xl font-bold tracking-tight text-ink">{profile?.name}</h1>
+              <div className="min-w-0 flex-1 pb-1">
+                <h1 className="break-words text-2xl font-bold tracking-tight text-ink">{profile?.name}</h1>
                 <div className="mt-1 flex flex-wrap items-center gap-2">
                   {profile?.experienceLevel && (
                     <SkillTag tone="level">{profile.experienceLevel}</SkillTag>

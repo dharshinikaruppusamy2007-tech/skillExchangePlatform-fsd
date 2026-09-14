@@ -15,7 +15,7 @@ const SkillCard = ({ skill, to, onEdit, onDelete }) => {
   const type = skill.type === 'learn' ? 'learn' : 'teach'
 
   return (
-    <article className="group flex h-full flex-col rounded-xl border border-gray-100 bg-white p-5 shadow-sm transition-shadow duration-200 hover:shadow-md">
+    <article className="group flex h-full min-w-0 flex-col rounded-xl border border-gray-100 bg-white p-5 shadow-sm transition-shadow duration-200 hover:shadow-md">
       <div className="flex items-start gap-3">
         <SkillIcon category={skill.category} />
         <div className="min-w-0 flex-1">
@@ -42,7 +42,7 @@ const SkillCard = ({ skill, to, onEdit, onDelete }) => {
 
       <div className="mt-4 flex flex-1 items-end justify-between gap-3">
         {owner ? (
-          <div className="flex items-center gap-2">
+          <div className="flex min-w-0 items-center gap-2">
             <UserAvatar
               name={owner.name}
               profileImage={owner.profileImage}

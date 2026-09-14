@@ -79,8 +79,8 @@ const Discover = () => {
 
       {/* Filters */}
       <section className="mt-6 space-y-4 rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
-        <form onSubmit={handleSubmit} className="flex gap-3">
-          <div className="relative flex-1">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:flex-row">
+          <div className="relative w-full sm:min-w-0 sm:flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
@@ -95,7 +95,7 @@ const Discover = () => {
             value={level}
             onChange={(e) => setLevel(e.target.value)}
             aria-label="Filter by proficiency level"
-            className="rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-700 outline-none transition focus:border-primary-300 focus:ring-2 focus:ring-primary-100"
+            className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-700 outline-none transition focus:border-primary-300 focus:ring-2 focus:ring-primary-100 sm:w-auto"
           >
             <option value="">All levels</option>
             {LEVELS.map((level) => (
@@ -108,7 +108,7 @@ const Discover = () => {
             value={type}
             onChange={(e) => setType(e.target.value)}
             aria-label="Filter by skill type"
-            className="rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-700 outline-none transition focus:border-primary-300 focus:ring-2 focus:ring-primary-100"
+            className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-700 outline-none transition focus:border-primary-300 focus:ring-2 focus:ring-primary-100 sm:w-auto"
           >
             {TYPE_FILTERS.map((filter) => (
               <option key={filter.value || 'all'} value={filter.value}>
@@ -119,7 +119,7 @@ const Discover = () => {
         </form>
 
         {/* Category chips */}
-        <div className="scrollbar-none flex gap-2 overflow-x-auto pb-1">
+        <div className="flex flex-wrap gap-2 pb-1">
           <button
             type="button"
             onClick={() => setCategory('')}

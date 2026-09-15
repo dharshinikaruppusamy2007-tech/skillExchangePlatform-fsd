@@ -121,19 +121,21 @@ const Profile = () => {
       {/* Hero card */}
       <section className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
         <div className="h-24 bg-gradient-to-r from-primary-600 to-primary-400 sm:h-28" />
-        <div className="px-6 pb-6">
-          <div className="-mt-12 flex min-w-0 flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div className="flex min-w-0 items-end gap-4">
-              <div className="shrink-0 rounded-full ring-4 ring-white">
+        <div className="px-6 pb-6 sm:px-8">
+          <div className="flex min-w-0 flex-col gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
+            <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-end sm:gap-5">
+              <div className="w-fit shrink-0 rounded-full ring-4 ring-white sm:-mt-14">
                 <UserAvatar
                   name={profile?.name}
                   profileImage={profile?.profileImage}
                   size="xl"
                 />
               </div>
-              <div className="min-w-0 flex-1 pb-1">
-                <h1 className="break-words text-2xl font-bold tracking-tight text-ink">{profile?.name}</h1>
-                <div className="mt-1 flex flex-wrap items-center gap-2">
+              <div className="min-w-0 flex-1 pb-0.5">
+                <h1 className="break-words text-2xl font-bold leading-snug tracking-tight text-ink sm:leading-tight">
+                  {profile?.name}
+                </h1>
+                <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1.5">
                   {profile?.experienceLevel && (
                     <SkillTag tone="level">{profile.experienceLevel}</SkillTag>
                   )}
@@ -144,14 +146,16 @@ const Profile = () => {
                 </div>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={() => setEditOpen(true)}
-              className="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-primary-700"
-            >
-              <Pencil className="h-4 w-4" />
-              Edit Profile
-            </button>
+            <div className="shrink-0">
+              <button
+                type="button"
+                onClick={() => setEditOpen(true)}
+                className="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-primary-700"
+              >
+                <Pencil className="h-4 w-4" />
+                Edit Profile
+              </button>
+            </div>
           </div>
         </div>
       </section>
